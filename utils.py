@@ -14,13 +14,13 @@ def parse_input(path: str = 'input.txt') -> tuple[int, int, PuzzleState]:
 
 
 def write_output(moves: List[str], path: str = 'output.txt') -> None:
-    """Write the solution moves to the output file."""
+    """Write the solution moves to output file."""
     with open(path, 'w') as f:
         f.write(''.join(moves))
 
 
 def manhattan(state: PuzzleState, n: int) -> int:
-    """Calculate the Manhattan distance heuristic for a given state."""
+    """Heuristic function: sum of Manhattan distances of each tile from its goal spot"""
     total = 0
     for idx, val in enumerate(state):
         if val == 0:
@@ -33,11 +33,11 @@ def manhattan(state: PuzzleState, n: int) -> int:
 
 def successors(state: PuzzleState, n: int) -> List[Tuple[PuzzleState, Action]]:
     """
-    Generates successor states based on tile moves (U, D, L, R preference).
+    Given a board, slide the blank in all possible directions based on tile moves (U, D, L, R preference).
+    Returns a list of successor states and the action taken to get to them.
     """
     successors_list: List[Tuple[PuzzleState, Action]] = []
     blank_idx: int = state.index(0)
-
     blank_row, blank_col = divmod(blank_idx, n)
 
     preferred_tile_actions_and_moves: List[Tuple[Action, Tuple[int, int]]] = [
@@ -60,7 +60,10 @@ def successors(state: PuzzleState, n: int) -> List[Tuple[PuzzleState, Action]]:
 
 
 def reconstruct_path(node: Node) -> Path:
-    """Reconstruct the path of moves from the initial state to the current node using parent links."""
+    """
+    Reconstruct the path of moves from the initial state to the current node using chain of parents, 
+    then reverse the moves list.
+    """
     moves = []
     while node.parent:
         moves.append(node.action)
@@ -69,9 +72,9 @@ def reconstruct_path(node: Node) -> Path:
 
 
 def is_solvable(state: PuzzleState, n: int) -> bool:
-    """Check if the puzzle state is solvable."""
+    """Check if this puzzle layout can ever be solved."""
     vals = [x for x in state if x]
-    inv = sum(vals[i] > vals[j] for i in range(len(vals)) for j in range(i + 1, len(vals)))
+    inv = sum(vals[i] > vals[j] for i in range(len(vals)) for j in range(i + 1, len(vals))) #Count inversions
     if n % 2 == 1:
         return inv % 2 == 0
     row = state.index(0) // n

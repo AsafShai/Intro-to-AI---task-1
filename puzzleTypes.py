@@ -1,15 +1,13 @@
 from typing import Optional, Tuple, NewType, List, Literal
-from enum import Enum
 
 PuzzleState = NewType('PuzzleState', Tuple[int, ...])
-# Action = NewType('Action', str)  # Represents a tile move: U, D, L, R
 Action = Literal['U', 'D', 'L', 'R']
 Path = NewType('Path', List[Action])
 
 
 
 class Node:
-    """Represents a state in the puzzle search."""
+    """This class Represents a board, the parent and the action taken to reach it."""
     def __init__(
         self,
         state: PuzzleState,
@@ -26,4 +24,7 @@ class Node:
         self.f: int = g + h
 
     def __lt__(self, other: 'Node') -> bool:
+        """
+        Compare two nodes based on their f-values, return True if self is lower.
+        """
         return self.f < other.f 
