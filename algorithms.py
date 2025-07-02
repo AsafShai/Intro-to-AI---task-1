@@ -3,9 +3,9 @@ from puzzleTypes import Node, PuzzleState, Path
 from utils import manhattan, successors, reconstruct_path
 import heapq
 
-
+# Depth-First Search for the puzzle
 def dfs(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
-    """Depth-First Search for the puzzle."""
+    """Depth-First Search: explores as far as possible along each path."""
     stack = [Node(start)]
     seen: Set[PuzzleState] = set()
     while stack:
@@ -18,9 +18,9 @@ def dfs(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
                 stack.append(Node(s, node, m))
     return []
 
-
+# Breadth-First Search for the puzzle
 def bfs(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
-    """Breadth-First Search for the puzzle."""
+    """Breadth-First Search: explores all neighbors level by level."""
     from collections import deque
     q = deque([Node(start)])
     seen: Set[PuzzleState] = {start}
@@ -34,9 +34,9 @@ def bfs(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
                 q.append(Node(s, node, m))
     return []
 
-
+# Iterative Deepening Depth-First Search for the puzzle.
 def iddfs(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
-    """Iterative Deepening Depth-First Search for the puzzle."""
+    """Iterative Deepening DFS: DFS with increasing depth limits."""
     def dls(node: Node, depth: int, limit: int, seen: Set[PuzzleState]) -> Path | None:
         if node.state == goal:
             return reconstruct_path(node)
@@ -58,9 +58,9 @@ def iddfs(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
             return sol
         depth += 1
 
-
+# A* Search with Manhattan heuristic for the puzzle
 def astar(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
-    """A* Search with Manhattan heuristic for the puzzle."""
+    """A* Search: uses a priority queue with g (cost so far) + h (Manhattan heuristic)."""
     open_list = []
     heapq.heappush(open_list, Node(start, g=0, h=manhattan(start, n)))
     best_g = {start: 0}
@@ -79,9 +79,9 @@ def astar(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
                 heapq.heappush(open_list, Node(s, node, m, g2, manhattan(s, n)))
     return []
 
-
+# Iterative Deepening A* Search for the puzzle
 def idastar(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
-    """Iterative Deepening A* Search for the puzzle."""
+    """Iterative Deepening A*: like IDDFS but guided by f = g + h."""
     limit = manhattan(start, n)
     path = [Node(start)]
 
