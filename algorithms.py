@@ -35,7 +35,7 @@ def bfs(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
     return []
 
 # Iterative Deepening Depth-First Search for the puzzle.
-def iddfs(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
+def ids(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
     """Iterative Deepening DFS: DFS with increasing depth limits."""
     def dls(node: Node, depth: int, limit: int, seen: Set[PuzzleState]) -> Path | None:
         if node.state == goal:
@@ -81,7 +81,7 @@ def astar(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
 
 # Iterative Deepening A* Search for the puzzle
 def idastar(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
-    """Iterative Deepening A*: like IDDFS but guided by f = g + h."""
+    """Iterative Deepening A*: like IDS but guided by f = g + h."""
     limit = manhattan(start, n)
     path = [Node(start)]
 
