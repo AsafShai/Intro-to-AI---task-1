@@ -71,6 +71,9 @@ def reconstruct_path(node: Node) -> Path:
     return Path(list(reversed(moves)))
 
 
+# Checks if a puzzle state is solvable.
+# - For odd-sized boards: solvable if the number of inversions is even.
+# - For even-sized boards: depends on both inversion count and blank tile row (from bottom).
 def is_solvable(state: PuzzleState, n: int) -> bool:
     """Check if this puzzle layout can ever be solved."""
     vals = [x for x in state if x]

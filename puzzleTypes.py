@@ -1,10 +1,14 @@
 from typing import Optional, Tuple, NewType, List, Literal
 
+# Core types and the Node class for solving the puzzle:
+# - PuzzleState: the board layout
+# - Action: a move ('U', 'D', 'L', 'R')
+# - Path: list of moves to solve the puzzle
+# - Node: holds a state, how we got there, and cost info
+
 PuzzleState = NewType('PuzzleState', Tuple[int, ...])
 Action = Literal['U', 'D', 'L', 'R']
 Path = NewType('Path', List[Action])
-
-
 
 class Node:
     """This class Represents a board, the parent and the action taken to reach it."""
