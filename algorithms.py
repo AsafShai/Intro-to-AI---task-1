@@ -48,7 +48,7 @@ def ids(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
                 sol = dls(Node(s, node, m), depth + 1, limit, seen)
                 if sol:
                     return sol
-        seen.remove(node.state)
+        seen.remove(node.state) # backtrack to allow for other paths to be explored
         return None
 
     depth = 0
@@ -67,6 +67,9 @@ def astar(start: PuzzleState, n: int, goal: PuzzleState) -> Path:
     closed: Set[PuzzleState] = set()
     while open_list:
         node = heapq.heappop(open_list)
+        # Skip nodes that don't match the best known g for this state (because of the priority queue implementation)
+        if node.g > best_g.get(node.state, float('inf')):
+            continue
         if node.state == goal:
             return reconstruct_path(node)
         closed.add(node.state)
